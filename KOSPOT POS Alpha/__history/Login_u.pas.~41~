@@ -1,0 +1,74 @@
+unit Login_u;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, Interface_u;
+
+type
+  TfrmLogin = class(TForm)
+    edtUsername: TEdit;
+    edtPassword: TEdit;
+    btnLogin: TBitBtn;
+    btnCancel: TBitBtn;
+    lblUsername: TLabel;
+    lblPassword: TLabel;
+    procedure btnLoginClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmLogin: TfrmLogin;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmLogin.btnLoginClick(Sender: TObject);
+var Name, Password : string ;
+    Errors : Integer ;
+begin
+
+  Errors := 0 ;
+
+  Name := edtUsername.Text ;
+  Password := edtPassword.Text ;
+
+  if Length(Name) > 8 then
+    begin
+      if Length(Password) > 8 then
+        begin
+         frmInterface.Show ;
+         frmLogin.Hide ;
+        end
+        else
+        Errors := Errors + 1 ;
+        raise Exception.Create('Exception Error: Password Must Be Longer Than 8 Characters' + #13 +
+                                'Errors Found:  ' + IntToStr(Errors));
+    end
+    else
+    Errors := Errors + 1 ;
+    raise Exception.Create('Exception Error: Admin Name Must Be Longer Than 8 Characters' + #13 +
+                                'Errors Found:  ' + IntToStr(Errors));
+
+
+    if not(Length(Name) and Length(Password) > 8 then
+      begin
+        Errors := 2 ;
+      end;
+
+  end;
+
+procedure TfrmLogin.FormCreate(Sender: TObject);
+begin
+   edtPassword.PasswordChar := '*' ;
+end;
+
+end.
+

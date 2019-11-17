@@ -1,0 +1,4 @@
+Koeldrank 330ml = R10
+Koeldrank 440ml = R13
+Powerade = R15
+Ice Tea = R10

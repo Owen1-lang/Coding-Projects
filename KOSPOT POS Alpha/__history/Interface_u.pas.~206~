@@ -1,0 +1,224 @@
+unit Interface_u;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, ExtCtrls, StdCtrls, Spin, Grids, DBGrids, Buttons, ADODB, DB;
+
+type
+  TfrmInterface = class(TForm)
+    mmNav: TMainMenu;
+    File1: TMenuItem;
+    Purchase1: TMenuItem;
+    Sales1: TMenuItem;
+    Wallets1: TMenuItem;
+    AddCredits1: TMenuItem;
+    pnlCustomerData: TPanel;
+    lblCustomer: TLabel;
+    cmbCustomer: TComboBox;
+    lblAdmin: TLabel;
+    edtAdmin: TEdit;
+    lblCurrency: TLabel;
+    edtCurrency: TEdit;
+    lblSalesInvoiceNo: TLabel;
+    edtInvoiceNo: TEdit;
+    lblSaleOrderNo: TLabel;
+    edtSaleNo: TEdit;
+    lblDocumentedDat: TLabel;
+    edtDocumentDate: TEdit;
+    lblFoods: TLabel;
+    cmbFoods: TComboBox;
+    sedFqty: TSpinEdit;
+    lblDrinks: TLabel;
+    cmbDrinks: TComboBox;
+    sedDqty: TSpinEdit;
+    lblSweets: TLabel;
+    cmbSweets: TComboBox;
+    sedSqty: TSpinEdit;
+    dbgrdPurchases: TDBGrid;
+    lblPurchases: TLabel;
+    lblExpenses: TLabel;
+    dbgrdExpenses: TDBGrid;
+    lblFoodPrice: TLabel;
+    edtFoodPrice: TEdit;
+    lblDrinkPrice: TLabel;
+    edtDrinkPrice: TEdit;
+    lblSweetPrice: TLabel;
+    edtSweetPrice: TEdit;
+    lblGrandTotal: TLabel;
+    edtGrandTotal: TEdit;
+    btnSavePurchase: TBitBtn;
+    btnCancel: TBitBtn;
+    btnReconnect: TBitBtn;
+    dsSQL: TDataSource;
+    conDBPurchases: TADOConnection;
+    Clients: TADOTable;
+    Purchases: TADOTable;
+    dsPurchases: TDataSource;
+    procedure btnSavePurchaseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnReconnectClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure Connect;
+  end;
+
+var
+  frmInterface: TfrmInterface;
+  dbConnection : TADOConnection ;
+  Clients, Purchases : TADOTable ;
+  qryClients : TADOQuery ;
+  dsSQL : TDataSource ;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmInterface.btnReconnectClick(Sender: TObject);
+begin
+if dbConnection.Connected = True then
+  begin
+    ShowMessageFmt('%s', ['Database Connection Restored']);
+  end;
+
+  if dbConnection.Connected = False then
+    begin
+     ShowMessageFmt('%s', ['Database Disconnection']);
+    end;
+end;
+
+procedure TfrmInterface.btnSavePurchaseClick(Sender: TObject);
+var Food, Sweets, Drinks : string ;
+    Total : Integer ;
+    Food_Price, Sweets_Price, Drinks_Price : Integer ;
+    fQty, sQty, dQty : Integer ;
+begin
+//Main Functionallity
+
+   case cmbFoods.Itemindex of
+  0 : begin
+        Food_Price :=  FQty * 15 ;
+      end;
+
+  1 : begin
+      Food_Price :=  FQty * 20 ;
+      end;
+
+  2 : begin
+      Food_Price :=  FQty *  8 ;
+      end;
+
+  3 : begin
+      Food_Price :=  FQty * 10 ;
+      end;
+
+  4 : begin
+      Food_Price :=  FQty * 25 ;
+      end;
+
+  5 : begin
+      Food_Price :=  FQty * 20 ;
+      end;
+
+  6 : begin
+      Food_Price :=  FQty * 20 ;
+      end;
+
+  7 : begin
+      Food_Price :=  FQty * 20 ;
+      end;
+
+  8 : begin
+      Food_Price :=  FQty * 25 ;
+      end;
+
+  9 : begin
+      Food_Price :=  FQty * 25 ;
+      end;
+  end;
+
+  case cmbDrinks.ItemIndex of
+  0 : begin
+        Drink_Total := DQty * 13 ;
+      end;
+
+  1 : begin
+        Drink_Total := DQty * 15 ;
+      end;
+
+  2 : begin
+        Drink_Total := DQty * 15 ;
+      end;
+
+  3 : begin
+        Drink_Total := DQty * 10 ;
+      end;
+
+  end;
+
+  case cmbSweets.ItemIndex of
+  0 : begin
+        Sweet_Total := SQty * 5 ;
+      end;
+
+  1 : begin
+        Sweet_Total := SQty * 4 ;
+      end;
+  end;
+
+  Total := Food_Total + Drink_Total + Sweet_Total ;
+  ShowMessage(IntToStr(Total)) ;
+
+  edtFoodPrice.Text := IntToStr(Food_Total) ;
+  edtDrinkPrice.Text := IntToStr(Drink_Total) ;
+  edtSweetPrice.Text := IntToStr(Sweet_Total) ;
+
+
+
+end;
+
+procedure TfrmInterface.Connect;
+var i : Integer ;
+begin
+// Connect to database
+ dbConnection := TADOConnection.Create(frmInterface);
+ dbConnection.ConnectionString := 'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=purchases.mdb;Mode=ReadWrite;Persist Security Info=False' ;
+ dbConnection.LoginPrompt := False ;
+ dbConnection.Provider := 'Microsoft.Jet.OLEDB.4.0';
+
+ Clients := TADOTable.Create(Self);
+ Clients.Connection := dbConnection ;
+ Clients.TableName := 'Clients' ;
+ Clients.Open() ;
+
+ Purchases := TADOTable.Create(Self);
+ Purchases.Connection := dbConnection ;
+ Purchases.TableName := 'puchases' ;
+ Purchases.Open() ;
+
+ 
+
+
+
+end;
+
+procedure TfrmInterface.FormActivate(Sender: TObject);
+begin
+edtCurrency.Text := 'R' ;
+cmbCustomer.Items.LoadFromFile('Onnies.txt');
+end;
+
+procedure TfrmInterface.FormCreate(Sender: TObject);
+begin
+Connect ;
+
+end;
+
+end.
+
+
+

@@ -1,0 +1,16 @@
+program KOSPOT_POS;
+
+uses
+  Forms,
+  Login_u in 'Login_u.pas' {frmLogin},
+  Interface_u in 'Interface_u.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmLogin, frmLogin);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

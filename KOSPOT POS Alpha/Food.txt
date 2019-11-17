@@ -1,0 +1,10 @@
+Toasted Ham/Cheese = R15
+Toasted Chic/Mayo = R20
+Hotdog = R8
+Chips = R10
+Hoender Wrap = R25
+Hoender Slaai = R20
+Hoender Burger = R20
+Chips & Nuggets = R20
+Mince Pita = R25
+Tacos = 25
